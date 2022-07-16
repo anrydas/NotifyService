@@ -1,6 +1,5 @@
 ## Das Notify Service
 ### _Service to send notifications to E-Mail, Telegram, Matrix_
-[![NotifyService Deployment](https://github.com/anrydas/NotifyService/actions/workflows/deploy-production.yml/badge.svg?event=deployment_status)](https://github.com/anrydas/NotifyService/actions/workflows/deploy-production.yml)<br/><br/>
 ![](https://img.shields.io/badge/Java-8-white)
 ![](https://img.shields.io/badge/Apache-Maven-lightblue)
 ![](https://img.shields.io/badge/Spring-Boot-g)
@@ -31,7 +30,7 @@ To build application just run
 ```
 mvn clean install
 ```
-You can also download jar application in our [Release]() section.
+You can also download jar application in our [Release](https://github.com/anrydas/NotifyService/releases) section.
 
 ### Starting application<a id='Start'></a>
 Use:
