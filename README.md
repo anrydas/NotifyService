@@ -30,7 +30,7 @@ To build application just run
 ```
 mvn clean install
 ```
-You can also download jar application in our [Release]() section.
+You can also download jar application in our [Release](https://github.com/anrydas/NotifyService/releases) section.
 
 ### Starting application<a id='Start'></a>
 Use:
