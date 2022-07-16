@@ -1,0 +1,97 @@
+package das.tools.notifier.notify.service;
+
+import com.pengrad.telegrambot.TelegramBot;
+import com.pengrad.telegrambot.model.request.ParseMode;
+import com.pengrad.telegrambot.request.*;
+import com.pengrad.telegrambot.request.SendMessage;
+import com.pengrad.telegrambot.response.SendResponse;
+import das.tools.notifier.notify.entitys.request.Request;
+import das.tools.notifier.notify.entitys.request.tg.TgSendMessage;
+import das.tools.notifier.notify.entitys.response.Response;
+import das.tools.notifier.notify.entitys.response.ResponseStatus;
+import das.tools.notifier.notify.entitys.response.tg.Tg;
+import das.tools.notifier.notify.entitys.response.tg.TgError;
+import das.tools.notifier.notify.entitys.response.tg.TgResponse;
+import das.tools.notifier.notify.exceptions.WrongRequestParameterException;
+import lombok.SneakyThrows;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Service;
+import org.springframework.web.client.HttpClientErrorException;
+import org.springframework.web.client.RestTemplate;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
+
+import java.io.File;
+
+@Service("telegram")
+@Slf4j
+public class SenderTgImpl implements Sender {
+
+    private final RestTemplate restTemplate;
+    private final TelegramBot telegramBot;
+
+    @Value("${tg.baseUrl}")
+    private String tgBaseUrl;
+    @Value("${tg.api.key}")
+    private String tgApiKey;
+    @Value("${tg.chatId}")
+    private String tgChatId;
+
+    @Value("${vb.baseUrl}")
+    private String vbBaseUrl;
+
+    public SenderTgImpl(RestTemplate restTemplate, TelegramBot telegramBot) {
+        this.restTemplate = restTemplate;
+        this.telegramBot = telegramBot;
+    }
+
+
+    @Override
+    public Response send(Request request) throws WrongRequestParameterException {
+        String message = Utils.getNotNullString(request.getMessage());
+        Response appResponse;
+        String chat = Utils.getNotNullStringOrDefault(request.getChatId(), tgChatId);
+        if ("".equals(chat)) {
+            throw new WrongRequestParameterException("Telegram's chat ID is empty");
+        }
+        String file = Utils.getNotNullString(request.getFile());
+        File f = new File(file);
+        if (!"".equals(file) && !f.exists()) {
+            throw new WrongRequestParameterException(String.format("Send to Telegram: File '%s' doesn't exists", file));
+        }
+        Long chatId = Long.valueOf(chat);
+        SendResponse response = getResponse(f, chatId, message);
+        if (response.isOk()) {
+            appResponse = Response.builder()
+                    .status(ResponseStatus.OK)
+                    .build();
+        } else {
+            appResponse = Response.builder()
+                    .status(ResponseStatus.ERROR)
+                    .errorMessage("Error occurred during sending message to Telegram")
+                    .comment(response.toString())
+                    .build();
+        }
+        return appResponse;
+    }
+
+    private SendResponse getResponse(File file, Long chat, String message) {
+        SendResponse res;
+        if (Utils.isImageFile(file.getAbsolutePath())) {
+            SendPhoto tgRequest = new SendPhoto(chat, file)
+                    .parseMode(ParseMode.HTML)
+                    .caption(message);
+            res = telegramBot.execute(tgRequest);
+        } else if(Utils.isVideoFile(file.getAbsolutePath())){
+            SendVideo tgRequest = new SendVideo(chat, file)
+                    .parseMode(ParseMode.HTML)
+                    .caption(message);
+            res = telegramBot.execute(tgRequest);
+        } else {
+            SendMessage tgRequest = new SendMessage(chat, message)
+                    .parseMode(ParseMode.HTML);
+            res = telegramBot.execute(tgRequest);
+        }
+        return res;
+    }
+}
