@@ -1,6 +1,6 @@
 ## Das Notify Service
 ### _Service to send notifications to E-Mail, Telegram, Matrix_
-
+[![NotifyService Deployment](https://github.com/anrydas/NotifyService/actions/workflows/deploy-production.yml/badge.svg?event=deployment_status)](https://github.com/anrydas/NotifyService/actions/workflows/deploy-production.yml)<br/><br/>
 ![](https://img.shields.io/badge/Java-8-white)
 ![](https://img.shields.io/badge/Apache-Maven-lightblue)
 ![](https://img.shields.io/badge/Spring-Boot-g)
