@@ -21,8 +21,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import java.io.File;
-import java.net.FileNameMap;
-import java.net.URLConnection;
 
 @Component("matrix")
 @Slf4j
@@ -54,9 +52,8 @@ public class SenderMxMessageImpl implements Sender {
         FileInfo fileInfo = null;
         String mimeType = "";
         String fileName = "";
-        String chatId = request.getChatId();
-        String roomId = !"".equals(chatId) ? chatId : defRoomId;
-        String file = request.getFile();
+        String roomId = Utils.getNotNullStringOrDefault(request.getChatId(), defRoomId);
+        String file = Utils.getNotNullString(request.getFile());
         if (!"".equals(file)) {
             File f = new File(file);
             if (!f.exists()) {

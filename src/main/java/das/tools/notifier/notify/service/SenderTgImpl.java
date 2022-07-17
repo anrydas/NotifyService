@@ -2,24 +2,18 @@ package das.tools.notifier.notify.service;
 
 import com.pengrad.telegrambot.TelegramBot;
 import com.pengrad.telegrambot.model.request.ParseMode;
-import com.pengrad.telegrambot.request.*;
 import com.pengrad.telegrambot.request.SendMessage;
+import com.pengrad.telegrambot.request.SendPhoto;
+import com.pengrad.telegrambot.request.SendVideo;
 import com.pengrad.telegrambot.response.SendResponse;
 import das.tools.notifier.notify.entitys.request.Request;
-import das.tools.notifier.notify.entitys.request.tg.TgSendMessage;
 import das.tools.notifier.notify.entitys.response.Response;
 import das.tools.notifier.notify.entitys.response.ResponseStatus;
-import das.tools.notifier.notify.entitys.response.tg.Tg;
-import das.tools.notifier.notify.entitys.response.tg.TgError;
-import das.tools.notifier.notify.entitys.response.tg.TgResponse;
 import das.tools.notifier.notify.exceptions.WrongRequestParameterException;
-import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
-import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
-import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.io.File;
 
@@ -37,14 +31,10 @@ public class SenderTgImpl implements Sender {
     @Value("${tg.chatId}")
     private String tgChatId;
 
-    @Value("${vb.baseUrl}")
-    private String vbBaseUrl;
-
     public SenderTgImpl(RestTemplate restTemplate, TelegramBot telegramBot) {
         this.restTemplate = restTemplate;
         this.telegramBot = telegramBot;
     }
-
 
     @Override
     public Response send(Request request) throws WrongRequestParameterException {
@@ -60,7 +50,7 @@ public class SenderTgImpl implements Sender {
             throw new WrongRequestParameterException(String.format("Send to Telegram: File '%s' doesn't exists", file));
         }
         Long chatId = Long.valueOf(chat);
-        SendResponse response = getResponse(f, chatId, message);
+        SendResponse response = !"".equals(file) ? getResponse(f, chatId, message) : getResponse(chatId, message);
         if (response.isOk()) {
             appResponse = Response.builder()
                     .status(ResponseStatus.OK)
@@ -88,10 +78,16 @@ public class SenderTgImpl implements Sender {
                     .caption(message);
             res = telegramBot.execute(tgRequest);
         } else {
-            SendMessage tgRequest = new SendMessage(chat, message)
-                    .parseMode(ParseMode.HTML);
-            res = telegramBot.execute(tgRequest);
+            res = getResponse(chat, message);
         }
+        return res;
+    }
+
+    private SendResponse getResponse(Long chat, String message) {
+        SendResponse res;
+        SendMessage tgRequest = new SendMessage(chat, message)
+                .parseMode(ParseMode.HTML);
+        res = telegramBot.execute(tgRequest);
         return res;
     }
 }
