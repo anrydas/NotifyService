@@ -74,6 +74,11 @@
                     </excludes>
                     <finalName>${project.artifactId}</finalName>
                 </configuration>
+                <executions>
+                    <execution>
+                        <id>repackage</id>
+                    </execution>
+                </executions>
             </plugin>
         </plugins>
     </build>
