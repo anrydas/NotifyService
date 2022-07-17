@@ -11,7 +11,6 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -46,7 +45,7 @@ public class SendMessageImpl implements SendMessage {
     @Override
     public Response execute(MessengerType type, Request request) {
         Sender sender = messageSenders.get(type);
-        Response res = null;
+        Response res;
         try {
             res = sender.send(request);
         } catch (WrongRequestParameterException e) {

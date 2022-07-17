@@ -18,6 +18,7 @@
 - [Starting application](#Start)
   - [start.sh](#startSh)
   - [startP.sh](#startpSh)
+- [Stopping application](#stop)
 - [Configuration](#Config)
   - [Parameters in setEnv.sh](#setEnv)
   - [Parameters in application-prod.properties](#appProp)
@@ -54,6 +55,9 @@ This script uses to [start the Application](#Start) in wey to initialize applica
 This script uses to [start the Application](#Start) in wey to initialize application's properties via [application-prod.properties](#appProp) file
 Those method uses -Dspring.profiles.active=prod parameter to start application in **prod** profile and loading data from application-prod.properties file.
 You can change profile name (and properties file name of course).
+
+### Stopping application<a id='stop'></a>
+Use ```stop.sh``` script to stop application.
 
 ### Configuration<a id='Config'></a>
 In general, you can start an application with following scripts
