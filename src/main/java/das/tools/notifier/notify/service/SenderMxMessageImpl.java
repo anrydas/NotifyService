@@ -100,6 +100,7 @@ public class SenderMxMessageImpl implements Sender {
                 .info(fileInfo)
                 .url(url)
                 .body(messageOrFileName)
+                .formattedBody(messageOrFileName)
                 .build();
         ObjectMapper mapper = new ObjectMapper();
         String jsonStr = null;
