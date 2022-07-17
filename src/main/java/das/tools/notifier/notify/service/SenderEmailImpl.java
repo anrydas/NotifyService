@@ -18,25 +18,18 @@ import javax.annotation.PostConstruct;
 import javax.mail.Message;
 import javax.mail.internet.MimeMessage;
 import java.io.File;
-import java.net.FileNameMap;
-import java.net.URLConnection;
-import java.util.Arrays;
-import java.util.List;
-import java.util.regex.Pattern;
 
 @Component("email")
 @Slf4j
 public class SenderEmailImpl implements Sender {
-    Pattern EMAIL_PATTERN = Pattern.compile("(?:[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*|\"(?:[\\x01-\\x08\\x0b\\x0c\\x0e-\\x1f\\x21\\x23-\\x5b\\x5d-\\x7f]|\\\\[\\x01-\\x09\\x0b\\x0c\\x0e-\\x7f])*\")@(?:(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?|\\[(?:(?:(2(5[0-5]|[0-4][0-9])|1[0-9][0-9]|[1-9]?[0-9]))\\.){3}(?:(2(5[0-5]|[0-4][0-9])|1[0-9][0-9]|[1-9]?[0-9])|[a-z0-9-]*[a-z0-9]:(?:[\\x01-\\x08\\x0b\\x0c\\x0e-\\x1f\\x21-\\x5a\\x53-\\x7f]|\\\\[\\x01-\\x09\\x0b\\x0c\\x0e-\\x7f])+)\\])");
-
-    private final JavaMailSender emailSender;
+        private final JavaMailSender emailSender;
 
     @Value("${spring.mail.password}")
     private String password;
     @Value("${eml.from.addr}")
     private String from;
     @Value("${eml.to.addr}")
-    private String to;
+    private String toDefaultAddress;
 
     public SenderEmailImpl(JavaMailSender emailSender) {
         this.emailSender = emailSender;
@@ -44,7 +37,7 @@ public class SenderEmailImpl implements Sender {
 
     @PostConstruct
     private void getValidToAddress() {
-        to = getValidEmailAddressesList(to);
+        toDefaultAddress = getValidEmailAddressesList(toDefaultAddress);
     }
 
     @Override
@@ -54,12 +47,12 @@ public class SenderEmailImpl implements Sender {
         if (log.isDebugEnabled()) log.debug("Try to send message {}", Utils.linearizedString(message));
         String chatId = request.getChatId() != null ? request.getChatId() : "";
         chatId = getValidEmailAddressesList(chatId);
-        String addressTo = !"".equals(chatId) && isValidEmail(chatId) ? chatId : to;
+        String addressTo = !"".equals(chatId) && isValidEmail(chatId) ? chatId : toDefaultAddress;
         String subject = Utils.getNotNullStringOrDefault(request.getSubject(), "Message");
         if ("".equals(addressTo)) {
             throw new WrongRequestParameterException("SendTo e-mail address is empty");
         }
-        String file = request.getFile();
+        String file = Utils.getNotNullString(request.getFile());
         if (!"".equals(file)) {
             if (log.isDebugEnabled()) log.debug("Sending file '{}' in message", file);
             MimeMessagePreparator preparator = getPreparator(addressTo, message, file, subject);
@@ -67,6 +60,7 @@ public class SenderEmailImpl implements Sender {
                 emailSender.send(preparator);
             } catch (MailException e) {
                 log.error("Error sending inline E-Mail", e);
+                throw new WrongRequestParameterException("Error sending E-Mail: " + e.getLocalizedMessage());
             }
         } else {
             if (log.isDebugEnabled()) log.debug("Sending plane text message");
@@ -124,12 +118,14 @@ public class SenderEmailImpl implements Sender {
      */
     private String getValidEmailAddressesList(String addresses) {
         StringBuilder res = new StringBuilder();
-        List<String> lst = Arrays.asList(addresses.split(";"));
-        System.out.println(lst);
+        String[] lst = addresses.split(EMAIL_SEMICOLON);
         for (String address : lst) {
             if(isValidEmail(address)) {
-                res.append(address).append(";");
+                res.append(address).append(EMAIL_SEMICOLON);
             }
+        }
+        if (res.lastIndexOf(EMAIL_SEMICOLON) > 0) {
+            res.deleteCharAt(res.lastIndexOf(EMAIL_SEMICOLON));
         }
         return res.toString();
     }
