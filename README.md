@@ -74,7 +74,7 @@ It uses in HTTP Header to additionaly ptopect the request.
 * ```APP_PORT='23445'``` application port. i.e. http://localhost:23445/
 * ```TG_URL='https://api.telegram.org'``` URL to connect to Telegram service
 * ```TG_API_KEY='xxx'``` Telegram API key
-* ```TG_CHAT_ID='1040798632'``` Telegram default chat ID
+* ```TG_CHAT_ID='ddddddddd'``` Telegram default chat ID
 * ```MX_BASE_URL='https://my-matrix.url.org'``` Matrix-Synapse server's URL
 * ```MX_USER='bot_user'``` Matrix's user to send messages to Matrix-Synapse server's
 * ```MX_USER_PASS='SuPeR_PassWoRd'``` Matrix user's password
