@@ -95,7 +95,6 @@ public class SenderMxMessageImpl implements Sender {
     }
 
     private JsonObject getJsonMessage(String messageType, FileInfo fileInfo, String url, String message, String fileName) {
-        // message ==
         MatrixSendMessage content;
         if ("m.text".equals(messageType)) {
             content = MatrixSendMessage.builder()
