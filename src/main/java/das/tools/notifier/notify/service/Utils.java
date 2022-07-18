@@ -33,4 +33,8 @@ public class Utils {
         String mimeType = getMimeType(s);
         return mimeType.split("/")[0];
     }
+
+    public static String removeHtmlTags(String inStr) {
+        return (inStr != null && !"".equals(inStr)) ? inStr.replaceAll("<[^>]*>", "") : inStr;
+    }
 }

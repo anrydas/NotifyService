@@ -109,7 +109,7 @@ public class SenderMxMessageImpl implements Sender {
                     .msgType(messageType)
                     .info(fileInfo)
                     .url(url)
-                    .body(String.format("[%s] - %s", fileName, message.replaceAll("<[^>]*>", "")))
+                    .body(String.format("[%s] - %s", fileName, Utils.removeHtmlTags(message)))
                     .build();
         }
 
