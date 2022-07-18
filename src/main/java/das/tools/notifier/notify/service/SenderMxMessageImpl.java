@@ -56,11 +56,12 @@ public class SenderMxMessageImpl implements Sender {
         String file = Utils.getNotNullString(request.getFile());
         if (!"".equals(file)) {
             File f = new File(file);
+            fileName = f.getName();
             if (!f.exists()) {
                 log.error("File '{}' not exists", file);
             } else {
                 mimeType = Utils.getMimeType(file);
-                if (log.isDebugEnabled()) log.debug("[Mx send] got mimeType='{}' for file='{}'", mimeType, fileName);
+                if (log.isDebugEnabled()) log.debug("[Mx send] got mimeType='{}' for file='{}'", mimeType, file);
                 if (mimeType.startsWith("image")) {
                     WH wh = ImageWH.getInstance().calculateFor(f);
                     fileInfo = FileInfo.builder()
@@ -75,7 +76,7 @@ public class SenderMxMessageImpl implements Sender {
                             .mimeType(mimeType)
                             .build();
                 }
-                resId = matrixClient.putMedia(f, mimeType, fileName);
+                resId = matrixClient.putMedia(f, mimeType, file);
                 if (log.isDebugEnabled()) log.debug("[Mx send] got resource URL={}", resId);
             }
         }
@@ -83,24 +84,35 @@ public class SenderMxMessageImpl implements Sender {
         String event = MatrixMessageTypeFactory.get(mimeType, resId);
         if (log.isDebugEnabled()) log.debug("[Mx send] got message event={}", event);
         String message = request.getMessage();
-        JsonObject jsonObject = getJsonMessage(event, fileInfo, resId,
-                ("m.image".equals(event) || "m.file".equals(event)) ? String.format("[%s] - %s", fileName, message) : message);
+        if (log.isDebugEnabled()) log.debug("[Mx send] fileName={}", fileName);
+        JsonObject jsonObject = getJsonMessage(event, fileInfo, resId, message, fileName);
         room.sendEvent("m.room.message", jsonObject);
         String comment = (!"".equals(file)) ? String.format("File URL='%s' loaded into Room ID='%s'",  resId, roomId) : null;
-        Response response = Response.builder()
+        return Response.builder()
                 .status(ResponseStatus.OK)
                 .comment(comment)
                 .build();
-        return response;
     }
 
-    private JsonObject getJsonMessage(String messageType, FileInfo fileInfo, String url, String messageOrFileName) {
-        MatrixSendMessage content = MatrixSendMessage.builder()
-                .msgType(messageType)
-                .info(fileInfo)
-                .url(url)
-                .body(messageOrFileName)
-                .build();
+    private JsonObject getJsonMessage(String messageType, FileInfo fileInfo, String url, String message, String fileName) {
+        MatrixSendMessage content;
+        if ("m.text".equals(messageType)) {
+            content = MatrixSendMessage.builder()
+                    .msgType(messageType)
+                    .info(fileInfo)
+                    .url(url)
+                    .body(message)
+                    .formattedBody(message)
+                    .build();
+        } else {
+            content = MatrixSendMessage.builder()
+                    .msgType(messageType)
+                    .info(fileInfo)
+                    .url(url)
+                    .body(String.format("[%s] - %s", fileName, Utils.removeHtmlTags(message)))
+                    .build();
+        }
+
         ObjectMapper mapper = new ObjectMapper();
         String jsonStr = null;
         try {
