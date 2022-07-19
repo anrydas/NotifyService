@@ -46,14 +46,14 @@ or you can use external *application.properties* file
 ```
 java - jar -Dspring.config.location=<file_name> NotifyService.jar
 ```
-See also [Configuration](#Config)
+See also: [Configuration](#Config), [Parameters in *application-prod.properties*](#appProp)
 
 #### start.sh<a id='startSh'></a>
 This script uses to [start the Application](#Start) in wey to initialize application's properties via [setEnv.sh](#setEnv) script
 
 #### startP.sh<a id='startpSh'></a>
 This script uses to [start the Application](#Start) in wey to initialize application's properties via [application-prod.properties](#appProp) file
-Those method uses -Dspring.profiles.active=prod parameter to start application in **prod** profile and loading data from application-prod.properties file.
+Those method uses ```-Dspring.profiles.active=prod``` parameter to start application in **prod** profile and loading data from ```application-prod.properties``` file.
 You can change profile name (and properties file name of course).
 
 ### Stopping application<a id='stop'></a>
@@ -71,7 +71,7 @@ This script calls in [start.sh](#startSh) script.
 * ```API_KEY_PARAMETER_NAME='app-key'``` Name of API key parameter.
 It uses in HTTP Header to additionaly ptopect the request. 
 * ```API_KEY_VALUE='ssXX22d'``` Defines API key. It may be any string you want
-* ```APP_PORT='23445'``` application port. i.e. http://localhost:23445/
+* ```APP_PORT='23445'``` application port to access to API. i.e. http://localhost:23445/
 * ```TG_URL='https://api.telegram.org'``` URL to connect to Telegram service
 * ```TG_API_KEY='xxx'``` Telegram API key
 * ```TG_CHAT_ID='ddddddddd'``` Telegram default chat ID
@@ -96,18 +96,18 @@ So it all. Then you can [start](#Start) the application with [startP.sh](#startp
 ```bash
 ./startP.sh
 ```
-Also you can use external *application.properties* file
+Also you can use any other *application.properties* file
 ```
 java - jar -Dspring.config.location=<file_name> NotifyService.jar
 ```
-Of course you can use eny  *application.properties* parameter [used in Spring Boot](https://docs.spring.io/spring-boot/docs/current/reference/html/application-properties.html). 
+Of course you can use eny  *application.properties*'s parameter [used in Spring Boot](https://docs.spring.io/spring-boot/docs/current/reference/html/application-properties.html). 
 
 ### API Description<a id='Api'></a>
-The Send message request need to be applied to ```http://localhost:APP_PORT/send``` endpoint.
-There is **required** to set HTTP header with API_KEY_PARAMETER_NAME name and API_KEY_VALUE value.
+The Send message request need to be applied to ```http://localhost:APP_PORT/send``` endpoint.<br/>
+There is **required** to set HTTP header with **API_KEY_PARAMETER_NAME** name and **API_KEY_VALUE** value.<br/>
 Something like that
 ```
-curl i -H "${API_KEY_PARAMETER_NAME}: ${API_KEY_VALUE}" "http://localhost:${APP_PORT}"
+curl i -H "${API_KEY_PARAMETER_NAME}:${API_KEY_VALUE}" "http://localhost:${APP_PORT}"
 ```
 
 #### Request<a id='Request'></a>
