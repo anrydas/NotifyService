@@ -123,7 +123,7 @@ The general Request format is
 ```
 * **messenger** - [*Required!*] one of ```TELEGRAMM, MATRIX, EMAIL```
 * **chat** - for Telegram or Matrix - the ID of Chat/Room, for E-Mail - semicolon-separated (;) e-mail addresses which will override the ```eml.to.addr``` parameter (see [Parameters in *setEnv.sh*](#setEnv), [Parameters in *application-prod.properties*](#appProp))
-* **message** - message text
+* **message** - message text. Application uses HTML markup to send rich text.
 * **file** - path to file which will be send
 * **subject** - the subject of E-Mail, for Telegram or Matrix ignored
 
