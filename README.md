@@ -5,6 +5,7 @@
 ![](https://img.shields.io/badge/Spring-Boot-g)
 ![](https://img.shields.io/badge/Project-Lombok-red)
 ![](https://img.shields.io/badge/kamax-matrix_sdk-blue)
+![](https://img.shields.io/badge/docker-engine-blue)
 
 ### Used
 * [Java](https://www.java.com/)
@@ -12,12 +13,14 @@
 * [Spring Boot](https://spring.io)
 * [Lombok](https://projectlombok.org)
 * [kamax matrix SDK](https://github.com/kamax-matrix/matrix-java-sdk/)
+* [Docker](https://www.docker.com/)
 
 ### Table of contents
 - [Build application](#Building)
 - [Starting application](#Start)
   - [start.sh](#startSh)
   - [startP.sh](#startpSh)
+- [Starting in Docker](#startDocker)
 - [Stopping application](#stop)
 - [Configuration](#Config)
   - [Parameters in setEnv.sh](#setEnv)
@@ -55,6 +58,20 @@ This script uses to [start the Application](#Start) in wey to initialize applica
 This script uses to [start the Application](#Start) in wey to initialize application's properties via [application-prod.properties](#appProp) file
 Those method uses ```-Dspring.profiles.active=prod``` parameter to start application in **prod** profile and loading data from ```application-prod.properties``` file.
 You can change profile name (and properties file name of course).
+
+### Starting in Docker<a id='startDocker'></a>
+To start application in Docker
+* put all contents of **docker-compose** directory into any directory in you server (or computer)
+* make sure you change values of all variables in **.env** file:
+  * ```TCP_PORT``` - port you want the application runs on
+  * ```PROFILE``` - profile name ('prod' by default)
+  * ```LOG_FILE_NAME``` - application's log file ('logs/Notifier.log' by default)
+* put **application-prod.properties** into **app** directory (**_note proper profile name_**)
+* put last release version of **NotifyService.jar** file into **app** directory
+* run the docker-compose project ```docker-compose up -d```
+That's all.
+
+See also [Configuration](#Config) section
 
 ### Stopping application<a id='stop'></a>
 Use ```stop.sh``` script to stop application.
@@ -124,7 +141,7 @@ The general Request format is
 * **messenger** - [*Required!*] one of ```TELEGRAMM, MATRIX, EMAIL```
 * **chat** - for Telegram or Matrix - the ID of Chat/Room, for E-Mail - semicolon-separated (;) e-mail addresses which will override the ```eml.to.addr``` parameter (see [Parameters in *setEnv.sh*](#setEnv), [Parameters in *application-prod.properties*](#appProp))
 * **message** - message text. Application uses HTML markup to send rich text.
-* **file** - path to file which will be send
+* **file** - path to file which will be send. The file contains the full path to file in local system. 
 * **subject** - the subject of E-Mail, for Telegram or Matrix ignored
 
 
