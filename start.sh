@@ -28,8 +28,6 @@ JAVA_D_PARAMS="
   -Deml.to.addr=${EML_TO}
 "
 
-nohup java -jar "${JAVA_D_PARAMS}" \
- NotifyService.jar \
- >> "${CONSOLE_LOG_FILE_NAME}" > 2>&1 &
+nohup java -jar "${JAVA_D_PARAMS}"  NotifyService.jar >> "${CONSOLE_LOG_FILE_NAME}" > 2>&1 &
 
 exit 0

@@ -5,6 +5,7 @@
 ![](https://img.shields.io/badge/Spring-Boot-g)
 ![](https://img.shields.io/badge/Project-Lombok-red)
 ![](https://img.shields.io/badge/kamax-matrix_sdk-blue)
+![](https://img.shields.io/badge/docker-engine-blue)
 
 ### Used
 * [Java](https://www.java.com/)
@@ -12,12 +13,14 @@
 * [Spring Boot](https://spring.io)
 * [Lombok](https://projectlombok.org)
 * [kamax matrix SDK](https://github.com/kamax-matrix/matrix-java-sdk/)
+* [Docker](https://www.docker.com/)
 
 ### Table of contents
 - [Build application](#Building)
 - [Starting application](#Start)
   - [start.sh](#startSh)
   - [startP.sh](#startpSh)
+- [Starting in Docker](#startDocker)
 - [Stopping application](#stop)
 - [Configuration](#Config)
   - [Parameters in setEnv.sh](#setEnv)
@@ -46,15 +49,29 @@ or you can use external *application.properties* file
 ```
 java - jar -Dspring.config.location=<file_name> NotifyService.jar
 ```
-See also [Configuration](#Config)
+See also: [Configuration](#Config), [Parameters in *application-prod.properties*](#appProp)
 
 #### start.sh<a id='startSh'></a>
 This script uses to [start the Application](#Start) in wey to initialize application's properties via [setEnv.sh](#setEnv) script
 
 #### startP.sh<a id='startpSh'></a>
 This script uses to [start the Application](#Start) in wey to initialize application's properties via [application-prod.properties](#appProp) file
-Those method uses -Dspring.profiles.active=prod parameter to start application in **prod** profile and loading data from application-prod.properties file.
+Those method uses ```-Dspring.profiles.active=prod``` parameter to start application in **prod** profile and loading data from ```application-prod.properties``` file.
 You can change profile name (and properties file name of course).
+
+### Starting in Docker<a id='startDocker'></a>
+To start application in Docker
+* put all contents of **docker-compose** directory into any directory in you server (or computer)
+* make sure you change values of all variables in **.env** file:
+  * ```TCP_PORT``` - port you want the application runs on
+  * ```PROFILE``` - profile name ('prod' by default)
+  * ```LOG_FILE_NAME``` - application's log file ('logs/Notifier.log' by default)
+* put **application-prod.properties** into **app** directory (**_note proper profile name_**)
+* put last release version of **NotifyService.jar** file into **app** directory
+* run the docker-compose project ```docker-compose up -d```
+That's all.
+
+See also [Configuration](#Config) section
 
 ### Stopping application<a id='stop'></a>
 Use ```stop.sh``` script to stop application.
@@ -71,7 +88,7 @@ This script calls in [start.sh](#startSh) script.
 * ```API_KEY_PARAMETER_NAME='app-key'``` Name of API key parameter.
 It uses in HTTP Header to additionaly ptopect the request. 
 * ```API_KEY_VALUE='ssXX22d'``` Defines API key. It may be any string you want
-* ```APP_PORT='23445'``` application port. i.e. http://localhost:23445/
+* ```APP_PORT='23445'``` application port to access to API. i.e. http://localhost:23445/
 * ```TG_URL='https://api.telegram.org'``` URL to connect to Telegram service
 * ```TG_API_KEY='xxx'``` Telegram API key
 * ```TG_CHAT_ID='ddddddddd'``` Telegram default chat ID
@@ -96,18 +113,18 @@ So it all. Then you can [start](#Start) the application with [startP.sh](#startp
 ```bash
 ./startP.sh
 ```
-Also you can use external *application.properties* file
+Also you can use any other *application.properties* file
 ```
 java - jar -Dspring.config.location=<file_name> NotifyService.jar
 ```
-Of course you can use eny  *application.properties* parameter [used in Spring Boot](https://docs.spring.io/spring-boot/docs/current/reference/html/application-properties.html). 
+Of course you can use eny  *application.properties*'s parameter [used in Spring Boot](https://docs.spring.io/spring-boot/docs/current/reference/html/application-properties.html). 
 
 ### API Description<a id='Api'></a>
-The Send message request need to be applied to ```http://localhost:APP_PORT/send``` endpoint.
-There is **required** to set HTTP header with API_KEY_PARAMETER_NAME name and API_KEY_VALUE value.
+The Send message request need to be applied to ```http://localhost:APP_PORT/send``` endpoint.<br/>
+There is **required** to set HTTP header with **API_KEY_PARAMETER_NAME** name and **API_KEY_VALUE** value.<br/>
 Something like that
 ```
-curl i -H "${API_KEY_PARAMETER_NAME}: ${API_KEY_VALUE}" "http://localhost:${APP_PORT}"
+curl i -H "${API_KEY_PARAMETER_NAME}:${API_KEY_VALUE}" "http://localhost:${APP_PORT}"
 ```
 
 #### Request<a id='Request'></a>
@@ -123,8 +140,8 @@ The general Request format is
 ```
 * **messenger** - [*Required!*] one of ```TELEGRAMM, MATRIX, EMAIL```
 * **chat** - for Telegram or Matrix - the ID of Chat/Room, for E-Mail - semicolon-separated (;) e-mail addresses which will override the ```eml.to.addr``` parameter (see [Parameters in *setEnv.sh*](#setEnv), [Parameters in *application-prod.properties*](#appProp))
-* **message** - message text
-* **file** - path to file which will be send
+* **message** - message text. Application uses HTML markup to send rich text.
+* **file** - path to file which will be send. The file contains the full path to file in local system. 
 * **subject** - the subject of E-Mail, for Telegram or Matrix ignored
 
 
