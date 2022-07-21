@@ -68,8 +68,8 @@ To start application in Docker
   * ```LOG_FILE_NAME``` - application's log file ('logs/Notifier.log' by default)
 * put **application-prod.properties** into **app** directory (**_note proper profile name_**)
 * put last release version of **NotifyService.jar** file into **app** directory
-* run the docker-compose project ```docker-compose up -d```
-That's all.
+* run the docker-compose project ```docker-compose up -d```<br/>
+That's all.<br/>
 Also you cam use our distribution. It already contains all files in zip archive.
 
 See also [Configuration](#Config) section
