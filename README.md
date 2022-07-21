@@ -32,7 +32,7 @@
 ### Build application<a id='Building'></a>
 To build application just run
 ```
-mvn clean install
+mvnw.cmd clean install -DskipTests
 ```
 You can also download jar application in our [Release](https://github.com/anrydas/NotifyService/releases) section.
 
