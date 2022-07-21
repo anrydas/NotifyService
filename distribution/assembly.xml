@@ -15,19 +15,19 @@
     <files>
         <file>
             <source>${project.build.directory}/${project.artifactId}.jar</source>
-            <outputDirectory>/</outputDirectory>
+            <outputDirectory>/docker-compose/Docker/app</outputDirectory>
         </file>
         <file>
             <source>application.properties</source>
-            <outputDirectory>/</outputDirectory>
+            <outputDirectory>/docker-compose/Docker/app</outputDirectory>
         </file>
         <file>
             <source>startP.sh</source>
-            <outputDirectory>/</outputDirectory>
+            <outputDirectory>/docker-compose/Docker/app</outputDirectory>
         </file>
         <file>
             <source>stop.sh</source>
-            <outputDirectory>/</outputDirectory>
+            <outputDirectory>/docker-compose/Docker/app</outputDirectory>
         </file>
     </files>
 </assembly>
