@@ -32,7 +32,7 @@
 ### Build application<a id='Building'></a>
 To build application just run
 ```
-mvn clean install
+mvnw.cmd clean install -DskipTests
 ```
 You can also download jar application in our [Release](https://github.com/anrydas/NotifyService/releases) section.
 
@@ -70,6 +70,7 @@ To start application in Docker
 * put last release version of **NotifyService.jar** file into **app** directory
 * run the docker-compose project ```docker-compose up -d```
 That's all.
+Also you cam use our distribution. It already contains all files in zip archive.
 
 See also [Configuration](#Config) section
 

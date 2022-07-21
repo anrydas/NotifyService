@@ -10,7 +10,7 @@
     </parent>
     <groupId>das.tools.notifier</groupId>
     <artifactId>NotifyService</artifactId>
-    <version>1.0.40-RELEASE</version>
+    <version>1.0.50-RELEASE</version>
     <name>Notify Service</name>
     <description>Das Notify Service</description>
     <properties>
@@ -77,6 +77,25 @@
                 <executions>
                     <execution>
                         <id>repackage</id>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-assembly-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>single</goal>
+                        </goals>
+                        <configuration>
+                            <appendAssemblyId>false</appendAssemblyId>
+                            <descriptors>
+                                <descriptor>distribution/assembly.xml</descriptor>
+                            </descriptors>
+                            <finalName>${project.artifactId}-distribution</finalName>
+                        </configuration>
                     </execution>
                 </executions>
             </plugin>
