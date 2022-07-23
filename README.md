@@ -1,22 +1,14 @@
 ## Das Notify Service
-### _Service to send notifications to E-Mail, Telegram, Matrix_
-![](https://img.shields.io/badge/Java-8-white)
-![](https://img.shields.io/badge/Apache-Maven-lightblue)
-![](https://img.shields.io/badge/Spring-Boot-g)
-![](https://img.shields.io/badge/Project-Lombok-red)
-![](https://img.shields.io/badge/kamax-matrix_sdk-blue)
-![](https://img.shields.io/badge/docker-engine-blue)
-
-### Used
-* [Java](https://www.java.com/)
-* [Apache Maven](https://maven.apache.org/)
-* [Spring Boot](https://spring.io)
-* [Lombok](https://projectlombok.org)
-* [kamax matrix SDK](https://github.com/kamax-matrix/matrix-java-sdk/)
-* [Docker](https://www.docker.com/)
+### _REST Service to send notifications to E-Mail, Telegram, Matrix_
+[![https://img.shields.io/badge/Java-8-white](https://img.shields.io/badge/Java-8-white)](https://www.java.com/)
+[![https://img.shields.io/badge/Apache-Maven-lightblue](https://img.shields.io/badge/Apache-Maven-lightblue)](https://maven.apache.org/)
+[![https://img.shields.io/badge/Spring-Boot-g](https://img.shields.io/badge/Spring-Boot-g)](https://spring.io)
+[![https://img.shields.io/badge/Project-Lombok-red](https://img.shields.io/badge/Project-Lombok-red)](https://projectlombok.org)
+[![https://img.shields.io/badge/docker-engine-blue](https://img.shields.io/badge/docker-engine-blue)](https://www.docker.com/)
+[![https://img.shields.io/badge/kamax-matrix_sdk-blue](https://img.shields.io/badge/kamax-matrix_sdk-blue)](https://github.com/kamax-matrix/matrix-java-sdk/)
 
 ### Table of contents
-- [Build application](#Building)
+- [Getting application](#Get)
 - [Starting application](#Start)
   - [start.sh](#startSh)
   - [startP.sh](#startpSh)
@@ -29,15 +21,17 @@
   - [Request](#Request)
   - [Response](#Response)
 
-### Build application<a id='Building'></a>
-To build application just run
-```
-mvnw.cmd clean install -DskipTests
-```
-You can also download jar application in our [Release](https://github.com/anrydas/NotifyService/releases) section.
+### Getting application<a id='Get'></a>
+You can download **zip** Distribution including **jar** application in [Release](https://github.com/anrydas/NotifyService/releases) section of Repository.
+Of course, you can clone our repository to build application by yourself. 
 
 ### Starting application<a id='Start'></a>
 Use:
+(prefer)
+```
+./startP.sh
+```
+or
 ```
 ./start.sh
 ```
@@ -52,10 +46,11 @@ java - jar -Dspring.config.location=<file_name> NotifyService.jar
 See also: [Configuration](#Config), [Parameters in *application-prod.properties*](#appProp)
 
 #### start.sh<a id='startSh'></a>
-This script uses to [start the Application](#Start) in wey to initialize application's properties via [setEnv.sh](#setEnv) script
+This script uses to [start the Application](#Start) in way to initialize application's properties via [setEnv.sh](#setEnv) script
 
 #### startP.sh<a id='startpSh'></a>
-This script uses to [start the Application](#Start) in wey to initialize application's properties via [application-prod.properties](#appProp) file
+_This method most prefer than other_
+This script uses to [start the Application](#Start) in way to initialize application's properties via [application-prod.properties](#appProp) file
 Those method uses ```-Dspring.profiles.active=prod``` parameter to start application in **prod** profile and loading data from ```application-prod.properties``` file.
 You can change profile name (and properties file name of course).
 
