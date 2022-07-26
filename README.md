@@ -6,6 +6,7 @@
 [![https://img.shields.io/badge/Project-Lombok-red](https://img.shields.io/badge/Project-Lombok-red)](https://projectlombok.org)
 [![https://img.shields.io/badge/docker-engine-blue](https://img.shields.io/badge/docker-engine-blue)](https://www.docker.com/)
 [![https://img.shields.io/badge/kamax-matrix_sdk-blue](https://img.shields.io/badge/kamax-matrix_sdk-blue)](https://github.com/kamax-matrix/matrix-java-sdk/)
+[![https://shields.io/badge/works%20with-Home%20Assistant-33E0FF](https://shields.io/badge/works%20with-Home%20Assistant-33E0FF)](https://www.home-assistant.io/)
 
 ### Table of contents
 - [Getting application](#Get)
@@ -74,8 +75,8 @@ Use ```stop.sh``` script to stop application.
 
 ### Configuration<a id='Config'></a>
 In general, you can start an application with following scripts
- * [start.sh](#startSh) - starts application with setting it's parameters in [setEnv.sh](#setEnv) script
- * [startP.sh](#startpSh) - starts application with setting it's parameters in [application-prod.properties](#appProp) file
+ * [start.sh](#startSh) - starts application with setting its parameters in [setEnv.sh](#setEnv) script
+ * [startP.sh](#startpSh) - starts application with setting its parameters in [application-prod.properties](#appProp) file
 Use one of you prefers method. 
 
 #### Parameters in *setEnv.sh*<a id='setEnv'></a>
@@ -116,7 +117,7 @@ java - jar -Dspring.config.location=<file_name> NotifyService.jar
 Of course you can use eny  *application.properties*'s parameter [used in Spring Boot](https://docs.spring.io/spring-boot/docs/current/reference/html/application-properties.html). 
 
 ### API Description<a id='Api'></a>
-The Send message request need to be applied to ```http://localhost:APP_PORT/send``` endpoint.<br/>
+The **Send message request** need to be applied to ```http://localhost:APP_PORT/send``` endpoint.<br/>
 There is **required** to set HTTP header with **API_KEY_PARAMETER_NAME** name and **API_KEY_VALUE** value.<br/>
 Something like that
 ```

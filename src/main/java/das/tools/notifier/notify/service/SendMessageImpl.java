@@ -17,7 +17,7 @@ import java.util.Map;
 @Service
 @Slf4j
 public class SendMessageImpl implements SendMessage {
-    private Map<MessengerType, Sender> messageSenders = new HashMap<>();
+    private final Map<MessengerType, Sender> messageSenders = new HashMap<>();
     private final Sender messageTg;
     //private final Sender messageVb;
     private final Sender messageMx;

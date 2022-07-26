@@ -17,12 +17,7 @@ public class ImageWH {
         if (instance == null) {
             instance = new ImageWH();
         }
-        initData();
         return instance;
-    }
-
-    private static void initData() {
-
     }
 
     private ImageWH() {
