@@ -1,8 +1,8 @@
 package das.tools.notifier.notify.entitys.img;
 
 public class WH {
-    private int w;
-    private int h;
+    private final int w;
+    private final int h;
 
     public WH(int w, int h) {
         this.w = w;

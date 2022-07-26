@@ -42,10 +42,6 @@ public class ApiKeyFilter extends GenericFilterBean {
             log.debug(error + "={}", key);
             HttpServletResponse resp = (HttpServletResponse) servletResponse;
             resp.reset();
-            //TODO: Decide how to invoke Requests with wrong API Keys
-            //resp.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-            //servletResponse.setContentLength(error.length());
-            //servletResponse.getWriter().write(error);
         }
     }
 }
