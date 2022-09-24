@@ -1,0 +1,15 @@
+version: "3.7"
+
+services:
+  notifier:
+    build: 
+      context: ./Docker
+    container_name: notifier
+    env_file:
+      - .env
+    restart: unless-stopped
+    volumes:
+      - ./Docker/app/logs:/deployments/logs
+    ports:
+      - "${TCP_PORT}:${TCP_PORT}"
+

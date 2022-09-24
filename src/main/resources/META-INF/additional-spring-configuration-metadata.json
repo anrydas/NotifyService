@@ -1,0 +1,93 @@
+{
+  "properties": [
+    {
+      "name": "app.api.key",
+      "type": "java.lang.String",
+      "description": "Application's API key to access to services."
+    },
+    {
+      "name": "vb.baseUrl",
+      "type": "java.lang.String",
+      "description": "Viber's server URL to access to it's API."
+    },
+    {
+      "name": "tg.baseUrl",
+      "type": "java.lang.String",
+      "description": "Telegram's server URL to access to it's API."
+    },
+    {
+      "name": "tg.api.key",
+      "type": "java.lang.String",
+      "description": "Telegram's API Key."
+    },
+    {
+      "name": "tg.chatId",
+      "type": "java.lang.String",
+      "description": "Telegram's Chat ID to send messages to."
+    },
+    {
+      "name": "vb.api.key",
+      "type": "java.lang.String",
+      "description": "Viber's API Key."
+    },
+    {
+      "name": "eml.from.addr",
+      "type": "java.lang.String",
+      "description": "'From' field value to sent e-mails."
+    },
+    {
+      "name": "eml.to.addr",
+      "type": "java.lang.String",
+      "description": "'To' Addresses to sent e-mails to."
+    },
+    {
+      "name": "app.api.key.parameter",
+      "type": "java.lang.String",
+      "description": "Name of Notifier Application API Key parameter."
+    },
+    {
+      "name": "mx.baseUrl",
+      "type": "java.lang.String",
+      "description": "Matrix server URL to access to it's API."
+    },
+    {
+      "name": "mx.bot.user",
+      "type": "java.lang.String",
+      "description": "Matrix user name to access to API, Rooms, ets."
+    },
+    {
+      "name": "mx.bot.pass",
+      "type": "java.lang.String",
+      "description": "Matrix user password."
+    },
+    {
+      "name": "mx.bot.default.roomid",
+      "type": "java.lang.String",
+      "description": "Matrix default Room ID to send messages to."
+    },
+    {
+      "name": "vb.media.folder",
+      "type": "java.lang.String",
+      "description": "Description for vb.media.folder."
+    },
+    {
+      "name": "vb.media.clear_temp",
+      "type": "java.lang.String",
+      "description": "Description for vb.media.clear_temp."
+    },
+    {
+      "name": "vb.media.clear_interval.days",
+      "type": "java.lang.String",
+      "description": "Description for vb.media.clear_interval.days."
+    },
+    {
+      "name": "app.baseUrl",
+      "type": "java.lang.String",
+      "description": "Description for app.baseUrl."
+    },
+    {
+      "name": "app.files.url.path",
+      "type": "java.lang.String",
+      "description": "Description for app.files.url.prefix."
+    }
+  ] }
