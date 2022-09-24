@@ -1,0 +1,33 @@
+<assembly xmlns="http://maven.apache.org/ASSEMBLY/2.1.1"
+          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xsi:schemaLocation="http://maven.apache.org/ASSEMBLY/2.1.1 http://maven.apache.org/xsd/assembly-2.1.1.xsd">
+    <id>zip</id>
+    <includeBaseDirectory>true</includeBaseDirectory>
+
+    <formats>
+        <format>zip</format>
+    </formats>
+    <fileSets>
+        <fileSet>
+            <directory>${project.basedir}/docker-compose</directory>
+        </fileSet>
+    </fileSets>
+    <files>
+        <file>
+            <source>${project.build.directory}/${project.artifactId}.jar</source>
+            <outputDirectory>/docker-compose/Docker/app</outputDirectory>
+        </file>
+        <file>
+            <source>application.properties</source>
+            <outputDirectory>/docker-compose/Docker/app</outputDirectory>
+        </file>
+        <file>
+            <source>startP.sh</source>
+            <outputDirectory>/docker-compose/Docker/app</outputDirectory>
+        </file>
+        <file>
+            <source>stop.sh</source>
+            <outputDirectory>/docker-compose/Docker/app</outputDirectory>
+        </file>
+    </files>
+</assembly>
