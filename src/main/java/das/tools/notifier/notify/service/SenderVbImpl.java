@@ -45,27 +45,36 @@ public class SenderVbImpl implements Sender {
     public ApplicationResponse send(Request request) {
         ApplicationResponse res;
         String message = Utils.linearizedString(request.getMessage());
-        UploadFileInfo fileInfo = request.getFileInfo();
-        // Check is file local or not
-        // if local - send it to upload service to take file's URL
-        // and send message with file's URL
-        //ToDo: Change the file_info to file field as in other messengers
-        if (!fileInfo.getFileUrl().toLowerCase().startsWith("http")) {
-            ApplicationResponse sendFileResponse;
+        String file = request.getFile();
+        if (file == null || "".equals(file)) {
+            log.error("The file field is empty");
+            res = ApplicationResponse.builder()
+                    .status(ResponseStatus.ERROR)
+                    .errorMessage("File field is empty")
+                    .build();
+            return res;
+        }
+        ApplicationResponse sendFileResponse = null;
+        UploadFileInfo fileInfo = null;
+        if (!file.toLowerCase().startsWith("http")) {
             try {
-                sendFileResponse = sendFileToUpload(fileInfo.getFileUrl());
+                sendFileResponse = sendFileToUpload(file);
             } catch (WrongRequestParameterException e) {
                 log.error("There was exception while sending file to server", e);
                 res = ApplicationResponse.builder()
                         .status(ResponseStatus.ERROR)
-                        .errorMessage("Error occurred during sending local file" + fileInfo.getFileUrl())
+                        .errorMessage("Error occurred during sending local file " + file)
                         .build();
                 return res;
             }
-            //Update File's Info with new file URL
-            fileInfo.setFileUrl(sendFileResponse.getFileInfo().getFileUrl());
         }
-        res = viberApi.sendBroadcastTextMessage(message, viberApi.getMembersListAsArray(), fileInfo);
+        if (sendFileResponse != null) {
+            res = viberApi.sendBroadcastTextMessage(message, viberApi.getMembersListAsArray(), sendFileResponse.getFileInfo());
+        } else {
+            log.error("There was some error while sending file to server");
+            res = viberApi.sendBroadcastTextMessage(message, viberApi.getMembersListAsArray(), null);
+            res.setComment("The file wasn't sent because error");
+        }
         return res;
     }
 
