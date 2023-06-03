@@ -31,7 +31,7 @@ public class ApiKeyFilter extends GenericFilterBean {
         if(log.isDebugEnabled()) log.debug("[doFilter]: got req={}", req.getQueryString());
         if(log.isDebugEnabled()) log.debug("[doFilter]: got path={}", path);
         if (!path.startsWith("/api/v1")) {
-            if(log.isDebugEnabled()) log.debug("[doFilter]: path NOT contains '/api/v1'");
+            if(log.isDebugEnabled()) log.debug("[doFilter]: path have wrong prefix - it NOT starts with '/api/v1'");
             filterChain.doFilter(servletRequest, servletResponse);
             return;
         }

@@ -55,6 +55,8 @@ public class UploadFileImpl implements UploadFile {
     }
     private ApplicationResponse getUploadFileResponse(File dest, String originalFileName) {
         String resUrl = ServletUriComponentsBuilder.fromHttpUrl(baseUrl)
+                .path(Sender.API_URL_PREFIX)
+                .path("/")
                 .path(Sender.FILES_URL_PREFIX)
                 .path("/")
                 .path(dest.getName())

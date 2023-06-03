@@ -2,6 +2,7 @@ package das.tools.notifier.notify.service;
 
 import das.tools.notifier.notify.entitys.request.Request;
 import das.tools.notifier.notify.entitys.response.ApplicationResponse;
+import das.tools.notifier.notify.entitys.response.ResponseStatus;
 import das.tools.notifier.notify.entitys.response.UploadFileInfo;
 import das.tools.notifier.notify.exceptions.WrongRequestParameterException;
 import lombok.extern.slf4j.Slf4j;
@@ -45,6 +46,25 @@ public class SenderVbImpl implements Sender {
         ApplicationResponse res;
         String message = Utils.linearizedString(request.getMessage());
         UploadFileInfo fileInfo = request.getFileInfo();
+        // Check is file local or not
+        // if local - send it to upload service to take file's URL
+        // and send message with file's URL
+        //ToDo: Change the file_info to file field as in other messengers
+        if (!fileInfo.getFileUrl().toLowerCase().startsWith("http")) {
+            ApplicationResponse sendFileResponse;
+            try {
+                sendFileResponse = sendFileToUpload(fileInfo.getFileUrl());
+            } catch (WrongRequestParameterException e) {
+                log.error("There was exception while sending file to server", e);
+                res = ApplicationResponse.builder()
+                        .status(ResponseStatus.ERROR)
+                        .errorMessage("Error occurred during sending local file" + fileInfo.getFileUrl())
+                        .build();
+                return res;
+            }
+            //Update File's Info with new file URL
+            fileInfo.setFileUrl(sendFileResponse.getFileInfo().getFileUrl());
+        }
         res = viberApi.sendBroadcastTextMessage(message, viberApi.getMembersListAsArray(), fileInfo);
         return res;
     }

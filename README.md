@@ -152,7 +152,6 @@ matrix:
                 Hello, World!
 ```
 ### Working with Viber<a id='Viber'></a>
-_Right now Notify Service Application supports sending text messages only without rich text formatting_
 <br/>To sending messages to Viber Bot you need:
 * register Viber Bot on [Viber Admin Panel](https://partners.viber.com/)
 * made Webhook to Notify Service Application's endpoint **_/api/v1/viber/webhook_**
@@ -161,14 +160,15 @@ _Right now Notify Service Application supports sending text messages only withou
 
 <br/>Application can send files to configured Viber bot
 <br/>To **send images/videos/files** you need to:
-* made changes in **application.properties** file in those parameters:
+* made changes in **application.properties** file in following parameters:
   * **app.baseUrl** - You_Application_Host_URL
-  * **app.files.url.path** - path from Host URL root to configured end-point (default 'files'')
+  * **app.files.url.path** - path from Host URL root to configured end-point (default 'files')
   * **vb.media.folder** - path to directory where files will be saved (default 'media.tmp' in Application folder)
 * send file with [Uploading](#upload) end-point
 * the file URL after uploading will be **https://you_host/api/v1/files/file_name.ext**; it will be in response body of [Downloading](#download)
 * send message to Viber using file URL
 * auto removing old files from directory to save free space (if necessary)
+#### From Application's version **1.2.0** if file sent in Request it will upload file to server and then send it to Viber 
 <br/>_For send image you can use other image hosting of course._
 <br/>The message will be sent to all subscribed to Bot recipients
 <br/>See details on [Viber API Documentation](https://developers.viber.com/docs/api/rest-bot-api), [Viber Documentation](https://developers.viber.com/docs/)
