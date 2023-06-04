@@ -5,6 +5,7 @@ import das.tools.notifier.notify.entitys.response.ApplicationResponse;
 import das.tools.notifier.notify.entitys.response.ResponseStatus;
 import das.tools.notifier.notify.entitys.response.UploadFileInfo;
 import das.tools.notifier.notify.exceptions.WrongRequestParameterException;
+import das.tools.notifier.notify.service.upload.UploadFile;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.IOUtils;
 import org.springframework.beans.factory.annotation.Value;
@@ -29,6 +30,7 @@ import java.io.IOException;
 public class SenderVbImpl implements Sender {
     private final ViberApi viberApi;
     private final RestTemplate restTemplate;
+    private final UploadFile uploadFile;
     @Value("${app.api.key.parameter}")
     private String keyParameter;
     @Value("${app.api.key}")
@@ -36,9 +38,10 @@ public class SenderVbImpl implements Sender {
     @Value("${app.baseUrl}")
     private String baseUrl;
 
-    public SenderVbImpl(ViberApi viberApi, RestTemplate restTemplate) {
+    public SenderVbImpl(ViberApi viberApi, RestTemplate restTemplate, UploadFile uploadFile) {
         this.viberApi = viberApi;
         this.restTemplate = restTemplate;
+        this.uploadFile = uploadFile;
     }
 
     @Override
@@ -46,59 +49,46 @@ public class SenderVbImpl implements Sender {
         ApplicationResponse res;
         String message = Utils.linearizedString(request.getMessage());
         String file = request.getFile();
-        if (file == null || "".equals(file)) {
-            log.error("The file field is empty");
+        if(file != null && !"".equals(file) && request.getFileInfo() != null) {
+            log.error("Wrong request: must by only one field in request - file OR file_info");
             res = ApplicationResponse.builder()
                     .status(ResponseStatus.ERROR)
-                    .errorMessage("File field is empty")
+                    .errorMessage("Wrong request: must by only one field in request - file OR file_info")
                     .build();
             return res;
         }
-        ApplicationResponse sendFileResponse = null;
-        UploadFileInfo fileInfo = null;
-        if (!file.toLowerCase().startsWith("http")) {
+        UploadFileInfo finalFileInfo = null;
+        if (file != null && !"".equals(file)) {
+            // local file
+            ApplicationResponse sendFileResponse = null;
             try {
-                sendFileResponse = sendFileToUpload(file);
+                sendFileResponse = sendLocalFile(file);
+                finalFileInfo = sendFileResponse.getFileInfo();
             } catch (WrongRequestParameterException e) {
-                log.error("There was exception while sending file to server", e);
-                res = ApplicationResponse.builder()
+                return ApplicationResponse.builder()
                         .status(ResponseStatus.ERROR)
-                        .errorMessage("Error occurred during sending local file " + file)
+                        .errorMessage(e.getLocalizedMessage())
                         .build();
-                return res;
             }
+        } else if (request.getFileInfo() != null) {
+            // remote file
+            finalFileInfo = request.getFileInfo();
         }
-        if (sendFileResponse != null) {
-            res = viberApi.sendBroadcastTextMessage(message, viberApi.getMembersListAsArray(), sendFileResponse.getFileInfo());
-        } else {
-            log.error("There was some error while sending file to server");
-            res = viberApi.sendBroadcastTextMessage(message, viberApi.getMembersListAsArray(), null);
-            res.setComment("The file wasn't sent because error");
-        }
+
+        res = viberApi.sendBroadcastTextMessage(message, viberApi.getMembersListAsArray(), finalFileInfo);
         return res;
     }
 
-    private ApplicationResponse sendFileToUpload(String file) throws WrongRequestParameterException {
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.MULTIPART_FORM_DATA);
-        headers.add(keyParameter, keyValue);
-        MultiValueMap<String, Object> body = new LinkedMultiValueMap<>();
+    private ApplicationResponse sendLocalFile(String file) throws WrongRequestParameterException {
+        ApplicationResponse res = null;
         try {
             MultipartFile multipartFile = getMultipartFile(file);
-            body.add("file", multipartFile.getResource());
-            HttpEntity<MultiValueMap<String, Object>> requestEntity = new HttpEntity<>(body, headers);
-            String url = ServletUriComponentsBuilder.fromHttpUrl(baseUrl)
-                    .path("/api/v1")
-                    .path("/upload")
-                    .toUriString();
-            if (log.isDebugEnabled()) log.debug("[sendFileToUpload] got url={}", url);
-            ResponseEntity<ApplicationResponse> response = restTemplate
-                    .postForEntity(url, requestEntity, ApplicationResponse.class);
-            return response.getBody();
-        } catch (Exception e) {
-            log.error("Send file to upload error ", e);
-            throw new WrongRequestParameterException("Send file to upload error: " + e.getLocalizedMessage(), e);
+            res = uploadFile.uploadFile(multipartFile).getBody();
+        } catch (IOException e) {
+            log.error("There was exception while sending file to server", e);
+            throw new WrongRequestParameterException(String.format("Error occurred during sending local file '%s'", file));
         }
+        return res;
     }
 
     private MultipartFile getMultipartFile(String file) throws IOException {

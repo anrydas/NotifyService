@@ -160,15 +160,15 @@ matrix:
 
 <br/>Application can send files to configured Viber bot
 <br/>To **send images/videos/files** you need to:
+* start application locally (you can also use any tool to send the file from local to remote as Multipart file; in this case consider to put API key field in request as described in [API Description](#Api))
 * made changes in **application.properties** file in following parameters:
-  * **app.baseUrl** - You_Application_Host_URL
+  * **app.baseUrl** - Your_Remote_Application_Host_URL
   * **app.files.url.path** - path from Host URL root to configured end-point (default 'files')
   * **vb.media.folder** - path to directory where files will be saved (default 'media.tmp' in Application folder)
 * send file with [Uploading](#upload) end-point
 * the file URL after uploading will be **https://you_host/api/v1/files/file_name.ext**; it will be in response body of [Downloading](#download)
 * send message to Viber using file URL
 * auto removing old files from directory to save free space (if necessary)
-#### From Application's version **1.2.0** if file sent in Request it will upload file to server and then send it to Viber 
 <br/>_For send image you can use other image hosting of course._
 <br/>The message will be sent to all subscribed to Bot recipients
 <br/>See details on [Viber API Documentation](https://developers.viber.com/docs/api/rest-bot-api), [Viber Documentation](https://developers.viber.com/docs/)
@@ -195,7 +195,7 @@ The general Request format is
 * **messenger** - [*Required!*] one of ```TELEGRAM, MATRIX, EMAIL, VIBER```
 * **chat** - for Telegram or Matrix - the ID of Chat/Room, for E-Mail - semicolon-separated (;) e-mail addresses which will override the ```eml.to.addr``` parameter (see [Parameters in *setEnv.sh*](#setEnv), [Parameters in *application-prod.properties*](#appProp))
 * **message** - message text. Application uses HTML markup to send rich text.
-* **file** - path to file which will be sent. The file contains the full path to file in local system. 
+* **file** - path to file which will be sent. The file contains the full path to file in **_local system_**. 
 * **subject** - the subject of E-Mail, for Telegram or Matrix ignored
 
 

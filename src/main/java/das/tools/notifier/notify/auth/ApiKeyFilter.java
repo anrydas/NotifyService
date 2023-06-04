@@ -1,5 +1,6 @@
 package das.tools.notifier.notify.auth;
 
+import das.tools.notifier.notify.service.Sender;
 import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -30,8 +31,8 @@ public class ApiKeyFilter extends GenericFilterBean {
         String path = req.getRequestURI();
         if(log.isDebugEnabled()) log.debug("[doFilter]: got req={}", req.getQueryString());
         if(log.isDebugEnabled()) log.debug("[doFilter]: got path={}", path);
-        if (!path.startsWith("/api/v1")) {
-            if(log.isDebugEnabled()) log.debug("[doFilter]: path have wrong prefix - it NOT starts with '/api/v1'");
+        if (!path.startsWith(Sender.API_URL_PREFIX)) {
+            if(log.isDebugEnabled()) log.debug("[doFilter]: path have wrong prefix - it NOT starts with '{}'", Sender.API_URL_PREFIX);
             filterChain.doFilter(servletRequest, servletResponse);
             return;
         }
