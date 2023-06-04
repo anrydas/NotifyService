@@ -43,7 +43,7 @@ public class SenderMxImpl implements Sender {
     @SneakyThrows
     @Override
     public ApplicationResponse send(Request request) {
-        if (matrixClient.getUser().isEmpty()) {
+        if (matrixClient.getUser() == null) {
             matrixClient.login(new MatrixPasswordCredentials(mxUser, mxPassword));
         }
 
@@ -73,7 +73,7 @@ public class SenderMxImpl implements Sender {
                     fileInfo = FileInfo.builder()
                             .size(f.length())
                             .mimeType(mimeType)
-                            .build();
+                            .h(0).w(0).build();
                 }
                 resId = matrixClient.putMedia(f, mimeType, file);
                 if (log.isDebugEnabled()) log.debug("[Mx send] got resource URL={}", resId);

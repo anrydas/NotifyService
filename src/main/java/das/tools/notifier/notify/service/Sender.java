@@ -14,6 +14,7 @@ public interface Sender {
     String FILES_RELATIVE_PATH = "media.tmp";
     @Value("${app.files.url.path}")
     String FILES_URL_PREFIX = "files";
+    String API_URL_PREFIX = "/api/v1";
 
     ApplicationResponse send(Request request) throws WrongRequestParameterException;
 }

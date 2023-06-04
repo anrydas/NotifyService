@@ -79,6 +79,7 @@ public class ViberApiImpl implements ViberApi {
                             .type(messageType)
                             .broadcastList(recipients)
                             .media(fileInfo.getFileUrl())
+                            .size(0)
                             .build();
                 } else if (messageType == ViberMessageType.video) {
                     request = ViberSendBroadcastMessageRequest.builder()
@@ -99,6 +100,7 @@ public class ViberApiImpl implements ViberApi {
                 request = ViberSendBroadcastMessageRequest.builder()
                         .text(message)
                         .broadcastList(recipients)
+                        .size(0)
                         .build();
             }
             if (log.isDebugEnabled())

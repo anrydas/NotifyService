@@ -152,7 +152,6 @@ matrix:
                 Hello, World!
 ```
 ### Working with Viber<a id='Viber'></a>
-_Right now Notify Service Application supports sending text messages only without rich text formatting_
 <br/>To sending messages to Viber Bot you need:
 * register Viber Bot on [Viber Admin Panel](https://partners.viber.com/)
 * made Webhook to Notify Service Application's endpoint **_/api/v1/viber/webhook_**
@@ -161,9 +160,10 @@ _Right now Notify Service Application supports sending text messages only withou
 
 <br/>Application can send files to configured Viber bot
 <br/>To **send images/videos/files** you need to:
-* made changes in **application.properties** file in those parameters:
-  * **app.baseUrl** - You_Application_Host_URL
-  * **app.files.url.path** - path from Host URL root to configured end-point (default 'files'')
+* start application locally (you can also use any tool to send the file from local to remote as Multipart file; in this case consider to put API key field in request as described in [API Description](#Api))
+* made changes in **application.properties** file in following parameters:
+  * **app.baseUrl** - Your_Remote_Application_Host_URL
+  * **app.files.url.path** - path from Host URL root to configured end-point (default 'files')
   * **vb.media.folder** - path to directory where files will be saved (default 'media.tmp' in Application folder)
 * send file with [Uploading](#upload) end-point
 * the file URL after uploading will be **https://you_host/api/v1/files/file_name.ext**; it will be in response body of [Downloading](#download)
@@ -195,7 +195,7 @@ The general Request format is
 * **messenger** - [*Required!*] one of ```TELEGRAM, MATRIX, EMAIL, VIBER```
 * **chat** - for Telegram or Matrix - the ID of Chat/Room, for E-Mail - semicolon-separated (;) e-mail addresses which will override the ```eml.to.addr``` parameter (see [Parameters in *setEnv.sh*](#setEnv), [Parameters in *application-prod.properties*](#appProp))
 * **message** - message text. Application uses HTML markup to send rich text.
-* **file** - path to file which will be sent. The file contains the full path to file in local system. 
+* **file** - path to file which will be sent. The file contains the full path to file in **_local system_**. 
 * **subject** - the subject of E-Mail, for Telegram or Matrix ignored
 
 

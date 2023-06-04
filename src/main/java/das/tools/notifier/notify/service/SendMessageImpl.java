@@ -27,7 +27,7 @@ public class SendMessageImpl implements SendMessage {
     public SendMessageImpl(@Qualifier("telegram") Sender messageTg,
                            @Qualifier("viber") Sender messageVb,
                            @Qualifier("matrix") Sender messageMx,
-                           @Qualifier("email") SenderEmailImpl messageEmail) {
+                           @Qualifier("email") Sender messageEmail) {
         this.messageTg = messageTg;
         this.messageVb = messageVb;
         this.messageMx = messageMx;
