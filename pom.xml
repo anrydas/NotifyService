@@ -10,7 +10,7 @@
     </parent>
     <groupId>das.tools.notifier</groupId>
     <artifactId>NotifyService</artifactId>
-    <version>1.2.3-RELEASE</version>
+    <version>1.2.7-RELEASE</version>
     <name>Notify Service</name>
     <description>Das Notify Service</description>
     <properties>
