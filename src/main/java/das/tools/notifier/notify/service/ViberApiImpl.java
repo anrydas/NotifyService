@@ -53,7 +53,7 @@ public class ViberApiImpl implements ViberApi {
                 httpEntity,
                 ViberGetAccountInfoResponse.class);
         ViberGetAccountInfoResponse responseBody = response.getBody();
-        if (responseBody != null) {
+        if (responseBody != null && responseBody.getMembers() != null) {
             for (ViberMemberResponse member : responseBody.getMembers()) {
                 res.add(member.getId());
             }
