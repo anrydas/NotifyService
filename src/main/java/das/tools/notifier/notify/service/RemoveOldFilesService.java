@@ -62,7 +62,12 @@ public class RemoveOldFilesService {
     }
 
     private int getIntervalDependOnProfile() {
-        return environment.getActiveProfiles()[0].equals(DEV_PROFILE_NAME) ? DEV_INTERVAL : interval * 1000 * 60 * 60 * 24;
+        String[] profiles = environment.getActiveProfiles();
+        int res = interval * 1000 * 60 * 60 * 24;
+        if (profiles.length > 0) {
+            res = DEV_PROFILE_NAME.equals(profiles[0]) ? DEV_INTERVAL : res;
+        }
+        return res;
     }
 
     private boolean isRunInDev() {
