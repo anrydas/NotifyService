@@ -5,7 +5,6 @@
 [![https://img.shields.io/badge/Spring-Boot-g](https://img.shields.io/badge/Spring-Boot-g)](https://spring.io)
 [![https://img.shields.io/badge/Project-Lombok-red](https://img.shields.io/badge/Project-Lombok-red)](https://projectlombok.org)
 [![https://img.shields.io/badge/docker-engine-blue](https://img.shields.io/badge/docker-engine-blue)](https://www.docker.com/)
-[![https://img.shields.io/badge/kamax-matrix_sdk-blue](https://img.shields.io/badge/kamax-matrix_sdk-blue)](https://github.com/kamax-matrix/matrix-java-sdk/)
 [![https://shields.io/badge/works%20with-Home%20Assistant-33E0FF](https://shields.io/badge/works%20with-Home%20Assistant-33E0FF)](https://www.home-assistant.io/)
 
 ### Table of contents
