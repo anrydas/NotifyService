@@ -2,20 +2,26 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
+    <properties>
+        <application.version>1.2.10-RELEASE</application.version>
+        <java.version>1.8</java.version>
+        <commons.version>2.6</commons.version>
+        <surefire.version>2.22.2</surefire.version>
+        <spring-mail.version>2.5.6</spring-mail.version>
+        <gson.version>2.10.1</gson.version>
+        <telegram-api.version>6.1.0</telegram-api.version>
+    </properties>
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
         <version>2.7.0</version>
-        <relativePath/> <!-- lookup parent from repository -->
+        <relativePath/>
     </parent>
     <groupId>das.tools.notifier</groupId>
     <artifactId>NotifyService</artifactId>
-    <version>1.2.3-RELEASE</version>
+    <version>${application.version}</version>
     <name>Notify Service</name>
     <description>Das Notify Service</description>
-    <properties>
-        <java.version>1.8</java.version>
-    </properties>
     <dependencies>
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -29,7 +35,7 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-mail</artifactId>
-            <version>2.5.6</version>
+            <version>${spring-mail.version}</version>
         </dependency>
 
         <dependency>
@@ -43,14 +49,25 @@
             <scope>test</scope>
         </dependency>
         <dependency>
-            <groupId>io.kamax</groupId>
-            <artifactId>matrix-java-sdk</artifactId>
-            <version>0.0.18</version>
-        </dependency>
-        <dependency>
             <groupId>com.github.pengrad</groupId>
             <artifactId>java-telegram-bot-api</artifactId>
-            <version>6.1.0</version>
+            <version>${telegram-api.version}</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.slf4j</groupId>
+                    <artifactId>slf4j-nop</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>org.slf4j</groupId>
+                    <artifactId>slf4j-jdk14</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+        <!-- https://mvnrepository.com/artifact/com.google.code.gson/gson -->
+        <dependency>
+            <groupId>com.google.code.gson</groupId>
+            <artifactId>gson</artifactId>
+            <version>${gson.version}</version>
         </dependency>
         <dependency>
             <groupId>org.springframework</groupId>
@@ -59,22 +76,41 @@
         <dependency>
             <groupId>commons-io</groupId>
             <artifactId>commons-io</artifactId>
-            <version>2.6</version>
+            <version>${commons.version}</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.slf4j</groupId>
+                    <artifactId>slf4j-nop</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>org.slf4j</groupId>
+                    <artifactId>slf4j-jdk14</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
         <dependency>
             <groupId>org.apache.maven.surefire</groupId>
             <artifactId>maven-surefire-common</artifactId>
-            <version>2.22.2</version>
+            <version>${surefire.version}</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.slf4j</groupId>
+                    <artifactId>slf4j-nop</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>org.slf4j</groupId>
+                    <artifactId>slf4j-jdk14</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
+        <!--<dependency>
+            <groupId>io.kamax</groupId>
+            <artifactId>matrix-java-sdk</artifactId>
+            <scope>system</scope>
+            <version>0.0.18</version>
+            <systemPath>${project.basedir}/3rdparty-files/matrix-java-sdk-0.0.18-16-gb0b6343.jar</systemPath>
+        </dependency>-->
     </dependencies>
-
-    <repositories>
-        <repository>
-            <id>kamax-io</id>
-            <name>kamax-io</name>
-            <url>https://kamax.io/maven/releases/</url>
-        </repository>
-    </repositories>
     <build>
         <plugins>
             <plugin>

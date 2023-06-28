@@ -68,26 +68,31 @@
     {
       "name": "vb.media.folder",
       "type": "java.lang.String",
-      "description": "Description for vb.media.folder."
+      "description": "Local folder to store uploaded files to."
     },
     {
       "name": "vb.media.clear_temp",
       "type": "java.lang.String",
-      "description": "Description for vb.media.clear_temp."
+      "description": "When true then Application will delete oldest uploaded files."
     },
     {
       "name": "vb.media.clear_interval.days",
       "type": "java.lang.String",
-      "description": "Description for vb.media.clear_interval.days."
+      "description": "Time interval to uploaded files will be stored."
     },
     {
       "name": "app.baseUrl",
       "type": "java.lang.String",
-      "description": "Description for app.baseUrl."
+      "description": "Application's base URL. Used to send files to Viber and to upload files."
     },
     {
       "name": "app.files.url.path",
       "type": "java.lang.String",
-      "description": "Description for app.files.url.prefix."
+      "description": "URL prefix to files upload path."
+    },
+    {
+      "name": "mx.session.lifetime",
+      "type": "java.lang.String",
+      "description": "Matrix-Synapse session's lifetime. Used to update Application's session connection to sever."
     }
   ] }

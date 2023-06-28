@@ -5,7 +5,6 @@
 [![https://img.shields.io/badge/Spring-Boot-g](https://img.shields.io/badge/Spring-Boot-g)](https://spring.io)
 [![https://img.shields.io/badge/Project-Lombok-red](https://img.shields.io/badge/Project-Lombok-red)](https://projectlombok.org)
 [![https://img.shields.io/badge/docker-engine-blue](https://img.shields.io/badge/docker-engine-blue)](https://www.docker.com/)
-[![https://img.shields.io/badge/kamax-matrix_sdk-blue](https://img.shields.io/badge/kamax-matrix_sdk-blue)](https://github.com/kamax-matrix/matrix-java-sdk/)
 [![https://shields.io/badge/works%20with-Home%20Assistant-33E0FF](https://shields.io/badge/works%20with-Home%20Assistant-33E0FF)](https://www.home-assistant.io/)
 
 ### Table of contents
@@ -20,6 +19,7 @@
   - [Parameters in application-prod.properties](#appProp)
 - [Working with Home Assistant](#HASS)
 - [Working with Viber](#Viber)
+  - [Auto Removing files](#autoRemove)
 - [API Description](#Api)
   - [Request](#Request)
   - [Response](#Response)
@@ -168,10 +168,21 @@ matrix:
 * send file with [Uploading](#upload) end-point
 * the file URL after uploading will be **https://you_host/api/v1/files/file_name.ext**; it will be in response body of [Downloading](#download)
 * send message to Viber using file URL
-* auto removing old files from directory to save free space (if necessary)
+* 
+#### Auto Removing files<a id='autoRemove'></a>
+Application can remove old downloaded files automatically. To enable auto removing old files from directory to save free space if necessary:
+* set **vb.media.clear_temp** property to **true** (default **false**)
+* set **vb.media.clear_interval.days** to value files will be stored (default 16 days)
+* restart the instance
+<br/>Application will delete files in **vb.media.folder** directory that older than **vb.media.clear_interval.days**
+<br/>_Application wouldn't delete any files if it runs under **dev** profile but will show messages about deleting files every 10 sec._
+
 <br/>_For send image you can use other image hosting of course._
 <br/>The message will be sent to all subscribed to Bot recipients
 <br/>See details on [Viber API Documentation](https://developers.viber.com/docs/api/rest-bot-api), [Viber Documentation](https://developers.viber.com/docs/)
+
+
+* 
 
 ### API Description<a id='Api'></a>
 The **Send message request** need to be applied to ```http://localhost:APP_PORT/send``` endpoint.<br/>

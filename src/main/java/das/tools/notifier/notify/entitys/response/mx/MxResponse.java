@@ -13,4 +13,6 @@ import lombok.*;
 public class MxResponse extends Mx {
     @JsonProperty("event_id")
     private String eventId;
+    @JsonProperty("content_uri")
+    private String contentUri;
 }
