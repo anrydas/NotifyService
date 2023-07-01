@@ -11,9 +11,9 @@ import org.springframework.stereotype.Component;
 @Component("matrix")
 @Slf4j
 public class SenderMxImpl implements Sender {
-    private final MatrixApiImpl matrixClient;
+    private final MatrixApi matrixClient;
 
-    public SenderMxImpl(MatrixApiImpl matrixClient) {
+    public SenderMxImpl(MatrixApi matrixClient) {
         this.matrixClient = matrixClient;
     }
 
