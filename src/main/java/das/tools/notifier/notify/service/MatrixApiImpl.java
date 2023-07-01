@@ -29,7 +29,7 @@ import java.util.UUID;
 
 @Service
 @Slf4j
-public class MatrixApiImpl {
+public class MatrixApiImpl implements MatrixApi {
     private static final int DEFAULT_LOGIN_INTERVAL = 60*60;
     private final RestTemplate restTemplate;
 
@@ -50,7 +50,7 @@ public class MatrixApiImpl {
         this.restTemplate = restTemplate;
     }
 
-    public void login() {
+    private void login() {
         if (log.isDebugEnabled()) log.debug("[MatrixApiImpl.login] Try to login");
         String url = ServletUriComponentsBuilder.fromHttpUrl(baseUrl)
                 .path("/_matrix/client/v3/login")
@@ -72,6 +72,7 @@ public class MatrixApiImpl {
         this.accessToken = body != null && body.getAccessToken() != null ? body.getAccessToken() : "";
     }
 
+    @Override
     public MxResponse sendMessage(Request request) throws WrongRequestParameterException {
         if (log.isDebugEnabled()) log.debug("[MatrixApiImpl.sendMessage] Try to process request {}", Utils.linearizedString(request));
         if (!isConnected()) {
@@ -129,6 +130,7 @@ public class MatrixApiImpl {
         return response;
     }
 
+    @Override
     public MxResponse sendTextMessage(String roomId, String message) {
         String url = ServletUriComponentsBuilder.fromHttpUrl(baseUrl)
                 .path("/_matrix/client/v3/rooms/")
@@ -148,6 +150,7 @@ public class MatrixApiImpl {
                 MxResponse.class);
         return response.getBody();
     }
+    @Override
     public MxResponse sendFileMessage(String roomId, MatrixSendMessage request) {
         String url = ServletUriComponentsBuilder.fromHttpUrl(baseUrl)
                 .path("/_matrix/client/v3/rooms/")
@@ -171,7 +174,7 @@ public class MatrixApiImpl {
         return response.getBody();
     }
 
-    public String postFile(String file) throws WrongRequestParameterException {
+    private String postFile(String file) throws WrongRequestParameterException {
         if (log.isDebugEnabled()) log.debug("[MatrixApiImpl.putImage] Try to send file '{}'", file);
         if (!isConnected()) {
             login();

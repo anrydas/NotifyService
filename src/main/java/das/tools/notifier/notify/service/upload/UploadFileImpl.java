@@ -75,7 +75,7 @@ public class UploadFileImpl implements UploadFile {
     }
 
     private String getObfuscatedFileName(String fileName) {
-        String fileExt = Utils.getFileExtention(fileName);
+        String fileExt = Utils.getFileExtension(fileName);
         int targetStringLength = 10;
         Random random = new Random();
         StringBuilder sb = new StringBuilder(String.valueOf(java.time.Instant.now().getEpochSecond()));
