@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @Slf4j
-@RequestMapping("/api/v1")
+@RequestMapping("${server.api.prefix}/api/v1")
 public class SendMessagesController {
 
     private final SendMessage sendMessage;

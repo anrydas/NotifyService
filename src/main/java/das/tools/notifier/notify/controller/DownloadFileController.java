@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.io.IOException;
 
 @RestController
-@RequestMapping("/api/v1")
+@RequestMapping("${server.api.prefix}/api/v1")
 @Slf4j
 public class DownloadFileController {
     private final GetFile getFile;
