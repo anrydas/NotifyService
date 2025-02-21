@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-@RestController("/api/v1/viber")
+@RestController("${server.api.prefix}/api/v1/viber")
 @Slf4j
 class ViberHookController {
     protected static final String THE_END_SUBSCRIPTION_COMMAND = "/TheEnd";

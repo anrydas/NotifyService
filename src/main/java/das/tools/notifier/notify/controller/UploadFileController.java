@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 @RestController
-@RequestMapping("/api/v1")
+@RequestMapping("${server.api.prefix}/api/v1")
 @Slf4j
 public class UploadFileController {
     private final UploadFile uploadFile;

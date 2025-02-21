@@ -3,13 +3,14 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <properties>
-        <application.version>1.2.11-RELEASE</application.version>
+        <application.version>1.2.12-RELEASE</application.version>
         <java.version>1.8</java.version>
         <commons.version>2.6</commons.version>
         <surefire.version>2.22.2</surefire.version>
         <spring-mail.version>2.5.6</spring-mail.version>
         <gson.version>2.10.1</gson.version>
         <telegram-api.version>6.1.0</telegram-api.version>
+        <okhttp.version>4.12.0</okhttp.version>
     </properties>
     <parent>
         <groupId>org.springframework.boot</groupId>
@@ -37,7 +38,6 @@
             <artifactId>spring-boot-starter-mail</artifactId>
             <version>${spring-mail.version}</version>
         </dependency>
-
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
@@ -62,6 +62,12 @@
                     <artifactId>slf4j-jdk14</artifactId>
                 </exclusion>
             </exclusions>
+        </dependency>
+        <!-- https://mvnrepository.com/artifact/com.squareup.okhttp3/okhttp -->
+        <dependency>
+            <groupId>com.squareup.okhttp3</groupId>
+            <artifactId>okhttp</artifactId>
+            <version>${okhttp.version}</version>
         </dependency>
         <!-- https://mvnrepository.com/artifact/com.google.code.gson/gson -->
         <dependency>
